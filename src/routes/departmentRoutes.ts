@@ -19,10 +19,4 @@ router.route('/:id')
   .patch(protect, updateDepartment)
   .delete(protect, deleteDepartment);
 
-// router.get('/', getDepartments);
-// router.get('/:id', getDepartment);
-// router.post('/', createDepartment);
-// router.patch('/:id', updateDepartment);
-// router.delete('/:id', deleteDepartment);
-
 export default router;

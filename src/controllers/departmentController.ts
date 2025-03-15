@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import type { Request, Response } from 'express';
+import logger from '../utils/logger';
 
 interface CreateDepartmentRequestBody {
   name: string;
@@ -32,6 +33,7 @@ export const getDepartments = async (
     });
   } catch (error) {
     const err = error as Error;
+    logger.error(`Error getting departments: ${err.message}`);
     res.status(500).json({
       success: false,
       message: err.message,
@@ -63,6 +65,7 @@ export const getDepartment = async (
     });
   } catch (error) {
     const err = error as Error;
+    logger.error(`Error getting department: ${err.message}`);
     res.status(500).json({
       success: false,
       message: err.message,
@@ -93,6 +96,7 @@ export const createDepartment = async (
     });
   } catch (error) {
     const err = error as Error;
+    logger.error(`Error creating department: ${err.message}`);
     res.status(500).json({
       success: false,
       message: err.message,
@@ -127,6 +131,7 @@ export const updateDepartment = async (
     });
   } catch (error) {
     const err = error as Error;
+    logger.error(`Error updating department: ${err.message}`);
     res.status(500).json({
       success: false,
       message: err.message,
@@ -155,6 +160,7 @@ export const deleteDepartment = async (
     });
   } catch (error) {
     const err = error as Error;
+    logger.error(`Error deleting department: ${err.message}`);
     res.status(500).json({
       success: false,
       message: err.message,

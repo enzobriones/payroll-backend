@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import type { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
+import logger from '../utils/logger';
 
 interface RegisterUserRequestBody {
   name: string;
@@ -71,6 +72,7 @@ export const registerUser = async (
     }
   } catch (error) {
     const err = error as Error;
+    logger.error(`Error creating user: ${err.message}`);
     res.status(500).json({
       success: false,
       message: err.message
@@ -112,6 +114,7 @@ export const loginUser = async (
     }
   } catch (error) {
     const err = error as Error;
+    logger.error(`Error logging in user: ${err.message}`);
     res.status(500).json({
       success: false,
       message: err.message
