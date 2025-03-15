@@ -1,0 +1,150 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ContractType {
+  FULL_TIME
+  PART_TIME
+  TEMPORARY
+  CONTRACTOR
+}
+
+enum HealthType {
+  FONASA
+  ISAPRE
+}
+
+enum PayrollStatus {
+  PENDING
+  PAID
+}
+
+model Company {
+  id        String   @id @default(uuid())
+  name      String
+  rut       String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  address Address[]
+
+  Employee Employee[]
+
+  User   User   @relation(fields: [userId], references: [id])
+  userId String
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Company Company[]
+}
+
+model Address {
+  id         String   @id @default(uuid())
+  street     String
+  number     String
+  apartment  String?
+  commune    String // "Comuna" in Chile
+  province   String
+  city       String
+  region     String
+  postalCode String?
+  country    String   @default("Chile")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  Employee   Employee? @relation(fields: [employeeId], references: [id])
+  employeeId String?
+  Company    Company?  @relation(fields: [companyId], references: [id])
+  companyId  String?
+}
+
+model Department {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  Employee Employee[]
+}
+
+model HealthPlan {
+  id        String   @id @default(uuid())
+  name      String
+  discount  Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Employee Employee[]
+}
+
+model AFP {
+  id        String   @id @default(uuid())
+  name      String
+  discount  Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Employee Employee[]
+}
+
+model Employee {
+  id           String       @id @default(uuid())
+  firstName    String
+  lastName     String
+  birthDate    DateTime
+  hireDate     DateTime
+  baseSalary   Int
+  jobTitle     String
+  contractType ContractType
+  healthType   HealthType
+  weeklyHours  Int
+  addresses    Address[]
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  afp   AFP?    @relation(fields: [afpId], references: [id])
+  afpId String?
+
+  healthPlan   HealthPlan? @relation(fields: [healthPlanId], references: [id])
+  healthPlanId String?
+
+  department   Department? @relation(fields: [departmentId], references: [id])
+  departmentId String?
+
+  Payroll   Payroll[]
+  
+  Company   Company?  @relation(fields: [companyId], references: [id])
+  companyId String?
+}
+
+model Payroll {
+  id                   String        @id @default(uuid())
+  month                Int
+  year                 Int
+  grossSalary          Int
+  netSalary            Int
+  status               PayrollStatus
+  unemploymentDiscount Int
+  paidAt               DateTime?
+  healthDiscount       Int
+  afpDiscount          Int
+  totalDiscount        Int
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+
+  Employee   Employee @relation(fields: [employeeId], references: [id])
+  employeeId String
+}
