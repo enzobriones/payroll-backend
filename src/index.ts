@@ -12,7 +12,7 @@ import authRoutes from './routes/authRoutes';
 import departmentRoutes from './routes/departmentRoutes';
 import employeeRoutes from './routes/employeeRoutes';
 import healthPlanRoutes from './routes/healthPlanRoutes';
-import healthRoutes from './routes/healthRoutes';
+import healthRoutes from './routes/healthPlanRoutes';
 import payrollRoutes from './routes/payrollRoutes';
 
 //* Load environment variables
