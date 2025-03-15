@@ -82,6 +82,7 @@ model Department {
 
 model HealthPlan {
   id        String   @id @default(uuid())
+  type      HealthType
   name      String
   discount  Float
   createdAt DateTime @default(now())
