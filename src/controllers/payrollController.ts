@@ -29,7 +29,7 @@ interface UpdatePayrollRequestBody {
 const prisma = new PrismaClient();
 
 // @desc    Get all payrolls
-// @route   GET /api/v1/payrolls
+// @route   GET /api/payrolls
 // @access  Public
 export const getPayrolls = async (
   req: Request,
@@ -68,7 +68,7 @@ export const getPayrolls = async (
 };
 
 // @desc    Get single payroll
-// @route   GET /api/v1/payrolls/:id
+// @route   GET /api/payrolls/:id
 // @access  Public
 export const getPayroll = async (
   req: Request,
@@ -107,7 +107,7 @@ export const getPayroll = async (
 };
 
 // @desc    Create payroll
-// @route   POST /api/v1/payrolls
+// @route   POST /api/payrolls
 // @access  Public
 export const createPayroll = async (
   req: Request,
@@ -199,7 +199,7 @@ export const createPayroll = async (
 };
 
 // @desc    Update payroll
-// @route   PUT /api/v1/payrolls/:id
+// @route   PUT /api/payrolls/:id
 // @access  Public
 export const updatePayroll = async (
   req: Request,
@@ -228,7 +228,7 @@ export const updatePayroll = async (
     if (!payrollExists) {
       res.status(404).json({
         success: false,
-        message: 'Liquidación no encontrada',
+        message: 'Payroll not found',
       });
       return;
     }
@@ -296,7 +296,7 @@ export const deletePayroll = async (
     if (!payrollExists) {
       res.status(404).json({
         success: false,
-        message: 'Liquidación no encontrada',
+        message: 'Payroll not found',
       });
       return;
     }
@@ -305,7 +305,7 @@ export const deletePayroll = async (
     if (payrollExists.status === 'PAID') {
       res.status(400).json({
         success: false,
-        message: 'No se puede eliminar una liquidación pagada',
+        message: 'Can\'t delete a paid payroll',
       });
       return;
     }
@@ -344,7 +344,7 @@ export const generatePayrolls = async (
     if (month < 1 || month > 12) {
       res.status(400).json({
         success: false,
-        message: 'Mes inválido. Debe ser entre 1 y 12',
+        message: 'Invalid month, must be between 1 and 12',
       });
       return;
     }
@@ -363,7 +363,7 @@ export const generatePayrolls = async (
     if (employees.length === 0) {
       res.status(404).json({
         success: false,
-        message: 'No se encontraron empleados para esta empresa',
+        message: 'No employees found in this company',
       });
       return;
     }
@@ -387,7 +387,7 @@ export const generatePayrolls = async (
           errors.push({
             employeeId: employee.id,
             name: `${employee.firstName} ${employee.lastName}`,
-            message: `Ya existe una liquidación para el mes ${month}/${year}`,
+            message: `Payroll already exists for ${month}/${year}`,
           });
           continue;
         }
